@@ -121,7 +121,7 @@ def load_signals_FB(data_dir, target, data_type):
         prefixes = sorted(prefixes)
 
         totalfiles = len(text_files)
-        print prefixes, totalfiles
+        print(prefixes, totalfiles)
 
         done = False
         count = 0
@@ -144,7 +144,7 @@ def load_signals_FB(data_dir, target, data_type):
                             data.append(tmp)
                             count += 1
                         except:
-                            print 'OOOPS, this file can not be loaded', filename                    
+                            print('OOOPS, this file can not be loaded', filename)                    
                     elif count >= totalfiles:
                         done = True
                     elif count < totalfiles:
@@ -156,12 +156,12 @@ def load_signals_FB(data_dir, target, data_type):
                     break
 
                 if len(data) > 0:
-                    yield (np.concatenate(data))	
-	
+                    yield (np.concatenate(data))  
+  
 def load_signals_CHBMIT(data_dir, target, data_type):
     print ('load_signals_CHBMIT for Patient', target)
     from mne.io import RawArray, read_raw_edf
-    from mne.channels import read_montage
+    #from mne.channels import read_montage
     from mne import create_info, concatenate_raws, pick_types
     from mne.filter import notch_filter
 
@@ -249,7 +249,6 @@ def load_signals_CHBMIT(data_dir, target, data_type):
         else:
             chs = [u'FP1-F7', u'F7-T7', u'T7-P7', u'P7-O1', u'FP1-F3', u'F3-C3', u'C3-P3', u'P3-O1', u'FP2-F4', u'F4-C4', u'C4-P4', u'P4-O2', u'FP2-F8', u'F8-T8', u'T8-P8', u'P8-O2', u'FZ-CZ', u'CZ-PZ', u'P7-T7', u'T7-FT9', u'FT9-FT10', u'FT10-T8']
 
-
         rawEEG = read_raw_edf('%s/%s' % (dir, filename),
                               #exclude=exclude_chs,  #only work in mne 0.16
                               verbose=0,preload=True)
@@ -258,14 +257,14 @@ def load_signals_CHBMIT(data_dir, target, data_type):
         #print (rawEEG.ch_names)
         #rawEEG.notch_filter(freqs=np.arange(60,121,60))
         tmp = rawEEG.to_data_frame()
-        tmp = tmp.as_matrix()
-
+        #tmp = tmp.as_matrix()
+        tmp = tmp.to_numpy()
         if data_type == 'ictal':
             SOP = 30 * 60 * 256
             # get seizure onset information
             indices = [ind for ind,x in enumerate(osfilenames) if x==filename]
             if len(indices) > 0:
-                print '%d seizures in the file %s' % (len(indices),filename)
+                print('%d seizures in the file %s' % (len(indices),filename))
                 prev_sp = -1e6
                 for i in range(len(indices)):
                     st = szstart[indices[i]]*256 - 5 * 60 * 256 #SPH=5min
@@ -294,7 +293,8 @@ def load_signals_CHBMIT(data_dir, target, data_type):
                                 rawEEG = read_raw_edf('%s/%s' % (dir, prevfile), preload=True,verbose=0)
                                 rawEEG.pick_channels(chs)
                                 prevtmp = rawEEG.to_data_frame()
-                                prevtmp = prevtmp.as_matrix()
+                                #prevtmp = prevtmp.as_matrix()
+                                prevtmp = prevtmp.to_numpy()
                                 if st > 0:
                                     data = np.concatenate((prevtmp[st - SOP:], tmp[:st]))
                                 else:
@@ -305,7 +305,7 @@ def load_signals_CHBMIT(data_dir, target, data_type):
                                     data = tmp[:st]
                                 else:
                                     #raise Exception("file %s does not contain useful info" % filename)
-                                    print "WARNING: file %s does not contain useful info" % filename
+                                    print("WARNING: file %s does not contain useful info" % filename)
                                     continue
                     else:
                         prev_sp = sp
@@ -356,7 +356,6 @@ class PrepData():
             return load_signals_Kaggle2014Pred(self.settings['datadir'], self.target, data_type)
 
         return 'array, freq, misc'
-
 
     def preprocess_Kaggle(self, data_):
         ictal = self.type == 'ictal'
@@ -421,7 +420,6 @@ class PrepData():
                         stft_data[indices] = 0
                         stft_data = np.transpose(stft_data,(2,1,0))
                         stft_data = np.abs(stft_data)+1e-6
-
 
                         stft_data = stft_data.reshape(-1, 1, stft_data.shape[0],stft_data.shape[1],stft_data.shape[2])
 
@@ -532,7 +530,6 @@ class PrepData():
                                                       stft_data.shape[1],
                                                       stft_data.shape[2])
 
-
                         X_temp.append(stft_data)
                         y_temp.append(y_value)
 
@@ -608,4 +605,4 @@ class PrepData():
             [X, y])
         return X, y
 
-
+ 
