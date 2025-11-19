@@ -111,7 +111,8 @@ def main(dataset='Kaggle2014Pred', build_type='cv'):
                 for i in range(len(y_test_i)):
                     lines.append('%.4f' % ((y_test_i[i][1])))
                 with open(filename, 'w') as f:
-                    print >> f, '\n'.join(lines)
+                    print('\n'.join(lines), file=f)
+                    #print >> f, '\n'.join(lines)
                 print('wrote', filename)
 
                 ind += 1
@@ -136,5 +137,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     assert args.mode in ['cv','test']
     main(dataset=args.dataset, build_type=args.mode)
+
 
 
