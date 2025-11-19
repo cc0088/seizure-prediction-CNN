@@ -16,7 +16,6 @@ def makedirs(dir):
     except:
         pass
 
-
 def main(dataset='Kaggle2014Pred', build_type='cv'):
     print ('Main')
     with open('SETTINGS_%s.json' %dataset) as f:
@@ -99,7 +98,7 @@ def main(dataset='Kaggle2014Pred', build_type='cv'):
                     lines.append('%.4f' % ((y_test_p[i][1])))
                 with open(filename, 'w') as f:
                     print >> f, '\n'.join(lines)
-                print 'wrote', filename
+                print('wrote', filename)
 
                 # interictal
                 X_test_i = X_test[y_test==0]
@@ -112,7 +111,7 @@ def main(dataset='Kaggle2014Pred', build_type='cv'):
                     lines.append('%.4f' % ((y_test_i[i][1])))
                 with open(filename, 'w') as f:
                     print >> f, '\n'.join(lines)
-                print 'wrote', filename
+                print('wrote', filename)
 
                 ind += 1
         elif build_type=='test':
@@ -136,4 +135,3 @@ if __name__ == '__main__':
     args = parser.parse_args()
     assert args.mode in ['cv','test']
     main(dataset=args.dataset, build_type=args.mode)
-
