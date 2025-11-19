@@ -248,12 +248,20 @@ def load_signals_CHBMIT(data_dir, target, data_type):
             chs = [u'FP1-F7', u'F7-T7', u'T7-P7', u'P7-O1', u'FP1-F3', u'F3-C3', u'C3-P3', u'P3-O1', u'FP2-F4', u'F4-C4', u'C4-P4', u'P4-O2', u'FP2-F8', u'F8-T8', u'P8-O2', u'FZ-CZ', u'CZ-PZ', u'P7-T7', u'T7-FT9', u'FT10-T8']
         else:
             chs = [u'FP1-F7', u'F7-T7', u'T7-P7', u'P7-O1', u'FP1-F3', u'F3-C3', u'C3-P3', u'P3-O1', u'FP2-F4', u'F4-C4', u'C4-P4', u'P4-O2', u'FP2-F8', u'F8-T8', u'T8-P8', u'P8-O2', u'FZ-CZ', u'CZ-PZ', u'P7-T7', u'T7-FT9', u'FT9-FT10', u'FT10-T8']
+        
+        #rawEEG = read_raw_edf('%s/%s' % (dir, filename),
+        #                      #exclude=exclude_chs,  #only work in mne 0.16
+        #                      verbose=0,preload=True)
 
         rawEEG = read_raw_edf('%s/%s' % (dir, filename),
-                              #exclude=exclude_chs,  #only work in mne 0.16
-                              verbose=0,preload=True)
-
-        rawEEG.pick_channels(chs)
+                              verbose=0, preload=True)
+        
+        chs_exist = []
+        for ch in chs:
+            matches = [name for name in rawEEG.ch_names if ch in name]
+            chs_exist.extend(matches)
+        rawEEG.pick_channels(chs_exist)
+        #rawEEG.pick_channels(chs)
         #print (rawEEG.ch_names)
         #rawEEG.notch_filter(freqs=np.arange(60,121,60))
         tmp = rawEEG.to_data_frame()
@@ -606,3 +614,4 @@ class PrepData():
         return X, y
 
  
+
