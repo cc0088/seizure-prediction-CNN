@@ -90,7 +90,6 @@ def train_val_loo_split(ictal_X, ictal_y, interictal_X, interictal_y, val_ratio)
         print ('X_train, X_val, X_test',X_train.shape, X_val.shape, X_test.shape)
         yield (X_train, y_train, X_val, y_val, X_test, y_test)
 
-
 def train_val_test_split(ictal_X, ictal_y, interictal_X, interictal_y, val_ratio, test_ratio):
 
     num_sz = len(ictal_y)
@@ -102,7 +101,6 @@ def train_val_test_split(ictal_X, ictal_y, interictal_X, interictal_y, val_ratio
         interictal_y = np.concatenate(interictal_y,axis=0)
     interictal_fold_len = int(round(1.0*interictal_y.shape[0]/num_sz))
     print ('interictal_fold_len',interictal_fold_len)
-
 
     X_test_ictal = np.concatenate(ictal_X[-num_sz_test:])
     y_test_ictal = np.concatenate(ictal_y[-num_sz_test:])
@@ -157,3 +155,4 @@ def train_val_test_split(ictal_X, ictal_y, interictal_X, interictal_y, val_ratio
 
     print ('X_train, X_val, X_test',X_train.shape, X_val.shape, X_test.shape)
     return X_train, y_train, X_val, y_val, X_test, y_test
+
