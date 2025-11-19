@@ -2,12 +2,12 @@ import os
 import pickle
 import hickle
 
-def save_hickle_file(filename, data):
-    filename = filename + '.hickle'
-    print ('Saving to %s' % filename)
-
-    with open(filename, 'w') as f:
-        hickle.dump(data, f, mode='w')
+#def save_hickle_file(filename, data):
+#    filename = filename + '.hickle'
+#    print ('Saving to %s' % filename)
+#
+#    with open(filename, 'w') as f:
+#        hickle.dump(data, f, mode='w')
 
 def load_hickle_file(filename):
     filename = filename + '.hickle'
@@ -16,6 +16,12 @@ def load_hickle_file(filename):
         data = hickle.load(filename)
         return data
     return None
+
+def save_hickle_file(filename, data):
+    filename = filename + '.hickle'
+    print('Saving to %s' % filename)
+
+    hickle.dump(data, filename, mode='w')
 
 def save_pickle_file(filename, data):
     filename = filename + '.pickle'
@@ -35,3 +41,4 @@ def load_pickle_file(filename):
             data = pickle.load(f)
             return data
     return None
+
