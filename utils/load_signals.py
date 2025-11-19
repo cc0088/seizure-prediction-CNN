@@ -299,7 +299,15 @@ def load_signals_CHBMIT(data_dir, target, data_type):
                         else:
                             if os.path.exists('%s/%s' % (dir, prevfile)):
                                 rawEEG = read_raw_edf('%s/%s' % (dir, prevfile), preload=True,verbose=0)
-                                rawEEG.pick_channels(chs)
+                                # 建立所有存在的 channel list
+                                chs_exist = []
+                                for ch in chs:
+                                    matches = [name for name in rawEEG.ch_names if name.startswith(ch)]
+                                    chs_exist.extend(matches)
+
+                                rawEEG.pick_channels(chs_exist)
+
+                                #rawEEG.pick_channels(chs)
                                 prevtmp = rawEEG.to_data_frame()
                                 #prevtmp = prevtmp.as_matrix()
                                 prevtmp = prevtmp.to_numpy()
@@ -614,4 +622,5 @@ class PrepData():
         return X, y
 
  
+
 
