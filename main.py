@@ -62,10 +62,10 @@ def main(dataset='Kaggle2014Pred', build_type='cv'):
                     #'13',
             #'14',
             #'18',
-             '19',
+            #'19',
             #'20',
-            #'21',
-            #'23'
+            '21',
+            '23'
         ]
 
     for target in targets:
@@ -137,6 +137,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     assert args.mode in ['cv','test']
     main(dataset=args.dataset, build_type=args.mode)
+
 
 
 
